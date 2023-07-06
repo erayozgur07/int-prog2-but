@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DB01Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Gruplar">
+          <Key>
+            <PropertyRef Name="grupId" />
+          </Key>
+          <Property Name="grupId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="grupAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kayit">
+          <Key>
+            <PropertyRef Name="kayitId" />
+          </Key>
+          <Property Name="kayitId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kayitGrupId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kayitKisiId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kayitMesajId" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kisiler">
+          <Key>
+            <PropertyRef Name="kisiId" />
+          </Key>
+          <Property Name="kisiId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kisiAdSoyad" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kisiNumara" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kisiEposta" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kisiYas" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mesajlar">
+          <Key>
+            <PropertyRef Name="mesajId" />
+          </Key>
+          <Property Name="mesajId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="mesajText" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="kimdenId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="kimeId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="grupId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="bulkMesaj" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Kayit_ToGruplar">
+          <End Role="Gruplar" Type="Self.Gruplar" Multiplicity="1" />
+          <End Role="Kayit" Type="Self.Kayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gruplar">
+              <PropertyRef Name="grupId" />
+            </Principal>
+            <Dependent Role="Kayit">
+              <PropertyRef Name="kayitGrupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kayit_ToKisiler">
+          <End Role="Kisiler" Type="Self.Kisiler" Multiplicity="1" />
+          <End Role="Kayit" Type="Self.Kayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kisiler">
+              <PropertyRef Name="kisiId" />
+            </Principal>
+            <Dependent Role="Kayit">
+              <PropertyRef Name="kayitKisiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kayit_ToMesajlar">
+          <End Role="Mesajlar" Type="Self.Mesajlar" Multiplicity="1" />
+          <End Role="Kayit" Type="Self.Kayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mesajlar">
+              <PropertyRef Name="mesajId" />
+            </Principal>
+            <Dependent Role="Kayit">
+              <PropertyRef Name="kayitMesajId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kisiler_ToGrup">
+          <End Role="Gruplar" Type="Self.Gruplar" Multiplicity="1" />
+          <End Role="Kisiler" Type="Self.Kisiler" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Gruplar">
+              <PropertyRef Name="grupId" />
+            </Principal>
+            <Dependent Role="Kisiler">
+              <PropertyRef Name="kisiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mesajlar_ToKisiler">
+          <End Role="Kisiler" Type="Self.Kisiler" Multiplicity="1" />
+          <End Role="Mesajlar" Type="Self.Mesajlar" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Kisiler">
+              <PropertyRef Name="kisiId" />
+            </Principal>
+            <Dependent Role="Mesajlar">
+              <PropertyRef Name="mesajId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB01ModelStoreContainer">
+          <EntitySet Name="Gruplar" EntityType="Self.Gruplar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kayit" EntityType="Self.Kayit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kisiler" EntityType="Self.Kisiler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mesajlar" EntityType="Self.Mesajlar" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Kayit_ToGruplar" Association="Self.FK_Kayit_ToGruplar">
+            <End Role="Gruplar" EntitySet="Gruplar" />
+            <End Role="Kayit" EntitySet="Kayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kayit_ToKisiler" Association="Self.FK_Kayit_ToKisiler">
+            <End Role="Kisiler" EntitySet="Kisiler" />
+            <End Role="Kayit" EntitySet="Kayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kayit_ToMesajlar" Association="Self.FK_Kayit_ToMesajlar">
+            <End Role="Mesajlar" EntitySet="Mesajlar" />
+            <End Role="Kayit" EntitySet="Kayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kisiler_ToGrup" Association="Self.FK_Kisiler_ToGrup">
+            <End Role="Gruplar" EntitySet="Gruplar" />
+            <End Role="Kisiler" EntitySet="Kisiler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mesajlar_ToKisiler" Association="Self.FK_Mesajlar_ToKisiler">
+            <End Role="Kisiler" EntitySet="Kisiler" />
+            <End Role="Mesajlar" EntitySet="Mesajlar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB01Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Gruplar">
+          <Key>
+            <PropertyRef Name="grupId" />
+          </Key>
+          <Property Name="grupId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="grupAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Kayit" Relationship="Self.FK_Kayit_ToGruplar" FromRole="Gruplar" ToRole="Kayit" />
+          <NavigationProperty Name="Kisiler" Relationship="Self.FK_Kisiler_ToGrup" FromRole="Gruplar" ToRole="Kisiler" />
+        </EntityType>
+        <EntityType Name="Kayit">
+          <Key>
+            <PropertyRef Name="kayitId" />
+          </Key>
+          <Property Name="kayitId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kayitGrupId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kayitKisiId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kayitMesajId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Gruplar" Relationship="Self.FK_Kayit_ToGruplar" FromRole="Kayit" ToRole="Gruplar" />
+          <NavigationProperty Name="Kisiler" Relationship="Self.FK_Kayit_ToKisiler" FromRole="Kayit" ToRole="Kisiler" />
+          <NavigationProperty Name="Mesajlar" Relationship="Self.FK_Kayit_ToMesajlar" FromRole="Kayit" ToRole="Mesajlar" />
+        </EntityType>
+        <EntityType Name="Kisiler">
+          <Key>
+            <PropertyRef Name="kisiId" />
+          </Key>
+          <Property Name="kisiId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kisiAdSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kisiNumara" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kisiEposta" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kisiYas" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Gruplar" Relationship="Self.FK_Kisiler_ToGrup" FromRole="Kisiler" ToRole="Gruplar" />
+          <NavigationProperty Name="Kayit" Relationship="Self.FK_Kayit_ToKisiler" FromRole="Kisiler" ToRole="Kayit" />
+          <NavigationProperty Name="Mesajlar" Relationship="Self.FK_Mesajlar_ToKisiler" FromRole="Kisiler" ToRole="Mesajlar" />
+        </EntityType>
+        <EntityType Name="Mesajlar">
+          <Key>
+            <PropertyRef Name="mesajId" />
+          </Key>
+          <Property Name="mesajId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="mesajText" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kimdenId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kimeId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="grupId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="bulkMesaj" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kayit" Relationship="Self.FK_Kayit_ToMesajlar" FromRole="Mesajlar" ToRole="Kayit" />
+          <NavigationProperty Name="Kisiler" Relationship="Self.FK_Mesajlar_ToKisiler" FromRole="Mesajlar" ToRole="Kisiler" />
+        </EntityType>
+        <Association Name="FK_Kayit_ToGruplar">
+          <End Role="Gruplar" Type="Self.Gruplar" Multiplicity="1" />
+          <End Role="Kayit" Type="Self.Kayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gruplar">
+              <PropertyRef Name="grupId" />
+            </Principal>
+            <Dependent Role="Kayit">
+              <PropertyRef Name="kayitGrupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kisiler_ToGrup">
+          <End Role="Gruplar" Type="Self.Gruplar" Multiplicity="1" />
+          <End Role="Kisiler" Type="Self.Kisiler" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Gruplar">
+              <PropertyRef Name="grupId" />
+            </Principal>
+            <Dependent Role="Kisiler">
+              <PropertyRef Name="kisiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kayit_ToKisiler">
+          <End Role="Kisiler" Type="Self.Kisiler" Multiplicity="1" />
+          <End Role="Kayit" Type="Self.Kayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kisiler">
+              <PropertyRef Name="kisiId" />
+            </Principal>
+            <Dependent Role="Kayit">
+              <PropertyRef Name="kayitKisiId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Kayit_ToMesajlar">
+          <End Role="Mesajlar" Type="Self.Mesajlar" Multiplicity="1" />
+          <End Role="Kayit" Type="Self.Kayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mesajlar">
+              <PropertyRef Name="mesajId" />
+            </Principal>
+            <Dependent Role="Kayit">
+              <PropertyRef Name="kayitMesajId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mesajlar_ToKisiler">
+          <End Role="Kisiler" Type="Self.Kisiler" Multiplicity="1" />
+          <End Role="Mesajlar" Type="Self.Mesajlar" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Kisiler">
+              <PropertyRef Name="kisiId" />
+            </Principal>
+            <Dependent Role="Mesajlar">
+              <PropertyRef Name="mesajId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB01Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Gruplar" EntityType="Self.Gruplar" />
+          <EntitySet Name="Kayit" EntityType="Self.Kayit" />
+          <EntitySet Name="Kisiler" EntityType="Self.Kisiler" />
+          <EntitySet Name="Mesajlar" EntityType="Self.Mesajlar" />
+          <AssociationSet Name="FK_Kayit_ToGruplar" Association="Self.FK_Kayit_ToGruplar">
+            <End Role="Gruplar" EntitySet="Gruplar" />
+            <End Role="Kayit" EntitySet="Kayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kisiler_ToGrup" Association="Self.FK_Kisiler_ToGrup">
+            <End Role="Gruplar" EntitySet="Gruplar" />
+            <End Role="Kisiler" EntitySet="Kisiler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kayit_ToKisiler" Association="Self.FK_Kayit_ToKisiler">
+            <End Role="Kisiler" EntitySet="Kisiler" />
+            <End Role="Kayit" EntitySet="Kayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Kayit_ToMesajlar" Association="Self.FK_Kayit_ToMesajlar">
+            <End Role="Mesajlar" EntitySet="Mesajlar" />
+            <End Role="Kayit" EntitySet="Kayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mesajlar_ToKisiler" Association="Self.FK_Mesajlar_ToKisiler">
+            <End Role="Kisiler" EntitySet="Kisiler" />
+            <End Role="Mesajlar" EntitySet="Mesajlar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB01ModelStoreContainer" CdmEntityContainer="DB01Entities">
+          <EntitySetMapping Name="Gruplar">
+            <EntityTypeMapping TypeName="DB01Model.Gruplar">
+              <MappingFragment StoreEntitySet="Gruplar">
+                <ScalarProperty Name="grupId" ColumnName="grupId" />
+                <ScalarProperty Name="grupAdi" ColumnName="grupAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kayit">
+            <EntityTypeMapping TypeName="DB01Model.Kayit">
+              <MappingFragment StoreEntitySet="Kayit">
+                <ScalarProperty Name="kayitId" ColumnName="kayitId" />
+                <ScalarProperty Name="kayitGrupId" ColumnName="kayitGrupId" />
+                <ScalarProperty Name="kayitKisiId" ColumnName="kayitKisiId" />
+                <ScalarProperty Name="kayitMesajId" ColumnName="kayitMesajId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kisiler">
+            <EntityTypeMapping TypeName="DB01Model.Kisiler">
+              <MappingFragment StoreEntitySet="Kisiler">
+                <ScalarProperty Name="kisiId" ColumnName="kisiId" />
+                <ScalarProperty Name="kisiAdSoyad" ColumnName="kisiAdSoyad" />
+                <ScalarProperty Name="kisiNumara" ColumnName="kisiNumara" />
+                <ScalarProperty Name="kisiEposta" ColumnName="kisiEposta" />
+                <ScalarProperty Name="kisiYas" ColumnName="kisiYas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mesajlar">
+            <EntityTypeMapping TypeName="DB01Model.Mesajlar">
+              <MappingFragment StoreEntitySet="Mesajlar">
+                <ScalarProperty Name="mesajId" ColumnName="mesajId" />
+                <ScalarProperty Name="mesajText" ColumnName="mesajText" />
+                <ScalarProperty Name="kimdenId" ColumnName="kimdenId" />
+                <ScalarProperty Name="kimeId" ColumnName="kimeId" />
+                <ScalarProperty Name="grupId" ColumnName="grupId" />
+                <ScalarProperty Name="bulkMesaj" ColumnName="bulkMesaj" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
